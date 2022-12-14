@@ -11,7 +11,10 @@ org 100h
     
     
     welcomeMsg db 'Welcome to Tic Tac Toe! $' ; terminator is the dollar sign   
-    inputMsg db 'Enter Position Number, Player Turn is: $'  
+    inputMsg db 'Enter Position Number, Player Turn is: $'
+    draw db 'Draw! $'
+    xWon db 'x Won! $'
+    yWon db 'y Won! $'  
     
  .CODE
     main:
@@ -32,21 +35,34 @@ org 100h
             endif:
             
             call printInputMsg
-            call readInput
+            call readInput ; al holds the position on the grid ( 1 => 9 )
             
-   
-              
+            push cx
+            mov cx, 9
+            mov bx, 0           ; loop on the grid to find the position (bx is used as an index to access the grid, cant use cx for that)
+            y:
+            cmp grid[bx],al     ; check if the grid position is equal to the position taken from the user
+            je update           ; if true update position with player (x or o), if false do nothing, continue the loop
+            jmp continue
+            update:
+            mov dl,player       ; moving player to dl because we cant mov memory to memory
+            mov grid[bx],dl  
+            continue:
+            inc bx
+            loop y
+            pop cx
+            ;call checkwin;        
         loop x           
         
     
-     
+        call printDraw   ; if we exit the loop and no one won, then its draw
         mov     ah, 0    ; wait for any key interupt
         int     16h      
         ret              ; final return in main that closes the program and returns to operating system 
     
     
         printGrid:
-            push cx ; pushing and popping cx before and after the function because cx is used in a loop where the function is called
+            push cx      ; pushing and popping cx before and after the function because cx is used in a loop where the function is called
             mov bx,0
             mov cx,3
             x1:
@@ -87,9 +103,27 @@ org 100h
            int 21h      
         ret
         
-        printWelcomeMsg:
+       printWelcomeMsg:
             lea dx, welcomeMsg  ; load offset of welcome msg into dl.
             mov ah, 9           ; print string interupt is 9  
+            int 21h
+        ret
+        
+       printDraw:
+            lea dx, draw  
+            mov ah, 9             
+            int 21h
+        ret
+        
+       printXwon:
+            lea dx, xWon  
+            mov ah, 9             
+            int 21h
+        ret
+        
+       printYwon:
+            lea dx, yWon  
+            mov ah, 9             
             int 21h
         ret
         
@@ -101,8 +135,9 @@ org 100h
             sub al, 30h   
             mov ah, 2h  
             int 21h
-        ret    
+        ret
+        
+        ;checkWin:
+        ;ret    
     end main                     
     
-
-
