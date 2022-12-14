@@ -17,7 +17,7 @@ org 100h
     main:
         call printWelcomeMsg
           
-        mov cx,9            ; looping 9 times because the maximum number of inputs in a tix tac toe game is 9
+        mov cx,9            ; looping 9 times because the maximum number of inputs in a tic tac toe game is 9
         x:  
             call printGrid 
             
@@ -42,7 +42,7 @@ org 100h
      
         mov     ah, 0    ; wait for any key interupt
         int     16h      
-        ret              ; final return in main that returns to operating system 
+        ret              ; final return in main that closes the program and returns to operating system 
     
     
         printGrid:
@@ -77,7 +77,7 @@ org 100h
         ret 
         
         printSpace:
-            mov dl, 32        ; space in ascii 
+            mov dl, 32       ; space in ascii 
             mov ah, 2         
             int 21h
         ret
@@ -103,3 +103,6 @@ org 100h
             int 21h
         ret    
     end main                     
+    
+
+
