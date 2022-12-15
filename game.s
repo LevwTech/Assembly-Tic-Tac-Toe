@@ -142,7 +142,8 @@ org 100h
             mov dl, player      ; print current player 
             sub al, 30h   
             mov ah, 2h  
-            int 21h
+            int 21h 
+            call printSpace
         ret
         
         checkWin:
@@ -216,3 +217,4 @@ org 100h
             int 10h
         ret    
     end main                     
+    
