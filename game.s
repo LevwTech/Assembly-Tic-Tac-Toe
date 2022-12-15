@@ -18,14 +18,15 @@ org 100h
  .CODE
     main:
          
-        mov cx,9              ; looping 9 times because the maximum number of inputs in a tic tac toe game is 9
+        mov cx,9              ; looping 9 times because the maximum number of inputs in a tic tac toe game is 9 (cx from 9 to 1)
         x:   
             call clearScreen  ; clears the console from the previous loop to look nicer
             call printWelcomeMsg
-            call printGrid 
+            call printGrid
+             
             
             mov bx, cx
-            and bx, 1       ; anding bx with 1, if if the result is 0 its even if its 1 its odd
+            and bx, 1       ; anding bx with 1, if the result is 0 its even if its 1 its odd
             cmp bx, 0
             je isEven       ; jmp if cx is even (equal 0) 
             mov player,'x'  ; if odd its x player turn
@@ -38,7 +39,6 @@ org 100h
             call printNewLine
             call printInputMsg
             call readInput ; al holds the position on the grid ( 1 => 9 )
-            
             
             push cx
             mov cx, 9
@@ -54,7 +54,7 @@ org 100h
             inc bx
             loop y
             pop cx
-            call checkwin;        
+            call checkwin        
         loop x           
         
     
@@ -131,8 +131,7 @@ org 100h
            cmp al,'9'
            je valid
            jmp notValid
-           valid:
-                
+           valid:        
         ret
         
        printWelcomeMsg:
@@ -174,7 +173,7 @@ org 100h
         checkWin:
             mov bl, grid[0]
             cmp bl, grid[1]              
-            jne skip1    ;skip if not true and check the other possible wins, keep repeating that for all 8 possible wins
+            jne skip1      ;skip if not true and check the other possible wins, keep repeating that for all 8 possible wins
             cmp bl, grid[2]  
             jne skip1 
             call printWon
@@ -207,7 +206,7 @@ org 100h
             mov bl, grid[1]
             cmp bl, grid[4]              
             jne skip5  
-            cmp bl, grid[5]  
+            cmp bl, grid[7]  
             jne skip5
             call printWon
             skip5:
