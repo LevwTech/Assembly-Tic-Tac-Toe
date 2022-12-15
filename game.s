@@ -13,8 +13,7 @@ org 100h
     welcomeMsg db 'Welcome to Tic Tac Toe! $' ; terminator is the dollar sign   
     inputMsg db 'Enter Position Number, Player Turn is: $'
     draw db 'Draw! $'
-    xWon db 'x Won! $'
-    yWon db 'y Won! $'  
+    won db 'Player Won: $'  
     
  .CODE
     main:
@@ -56,11 +55,18 @@ org 100h
         
     
         call printDraw   ; if we exit the loop and no one won, then its draw
+        
+        programEnd:   
+        
         mov     ah, 0    ; wait for any key interupt
         int     16h      
-        ret              ; final return in main that closes the program and returns to operating system 
+    ret              ; %%%%%%%%%%%%%%%%% final return in main that CLOSES THE PROGRAM and returns to operating system %%%%%%%%%%%%%%%%%% 
     
-    
+           
+        
+        
+        ; Procedures/Functions:
+        
         printGrid:
             push cx      ; pushing and popping cx before and after the function because cx is used in a loop where the function is called
             mov bx,0
@@ -115,17 +121,16 @@ org 100h
             int 21h
         ret
         
-       printXwon:
-            lea dx, xWon  
+       printWon:
+            lea dx, won  
             mov ah, 9             
             int 21h
-        ret
-        
-       printYwon:
-            lea dx, yWon  
-            mov ah, 9             
+            mov dl, player 
+            sub al, 30h   
+            mov ah, 2h  
             int 21h
-        ret
+            jmp programEnd
+        ret   
         
         printInputMsg:
             lea dx, inputMsg    ; load offset of welcome msg into dl.
@@ -141,3 +146,5 @@ org 100h
         ;ret    
     end main                     
     
+
+
