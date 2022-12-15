@@ -141,6 +141,7 @@ org 100h
         ret
         
        printDraw:
+            call printNewLine
             lea dx, draw  
             mov ah, 9             
             int 21h
