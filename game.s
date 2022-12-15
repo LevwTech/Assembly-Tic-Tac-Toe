@@ -17,10 +17,11 @@ org 100h
     
  .CODE
     main:
-        call printWelcomeMsg
-          
-        mov cx,9            ; looping 9 times because the maximum number of inputs in a tic tac toe game is 9
-        x:  
+         
+        mov cx,9              ; looping 9 times because the maximum number of inputs in a tic tac toe game is 9
+        x:   
+            call clearScreen  ; clears the console from the previous loop to look nicer
+            call printWelcomeMsg
             call printGrid 
             
             mov bx, cx
@@ -50,7 +51,7 @@ org 100h
             inc bx
             loop y
             pop cx
-            ;call checkwin;        
+            call checkwin;        
         loop x           
         
     
@@ -121,7 +122,9 @@ org 100h
             int 21h
         ret
         
-       printWon:
+       printWon:   
+            call printNewLine
+            call printGrid ; print grid one last time to show how the player won
             lea dx, won  
             mov ah, 9             
             int 21h
@@ -142,9 +145,74 @@ org 100h
             int 21h
         ret
         
-        ;checkWin:
-        ;ret    
+        checkWin:
+            mov bl, grid[0]
+            cmp bl, grid[1]              
+            jne skip1    ;skip if not true and check the other possible wins, keep repeating that for all 8 possible wins
+            cmp bl, grid[2]  
+            jne skip1 
+            call printWon
+            skip1:
+            
+            mov bl, grid[3]
+            cmp bl, grid[4]              
+            jne skip2  
+            cmp bl, grid[5]  
+            jne skip2
+            call printWon
+            skip2: 
+            
+            mov bl, grid[6]
+            cmp bl, grid[7]              
+            jne skip3  
+            cmp bl, grid[8]  
+            jne skip3
+            call printWon
+            skip3: 
+            
+            mov bl, grid[0]
+            cmp bl, grid[3]              
+            jne skip4  
+            cmp bl, grid[6]  
+            jne skip4
+            call printWon
+            skip4:   
+            
+            mov bl, grid[1]
+            cmp bl, grid[4]              
+            jne skip5  
+            cmp bl, grid[5]  
+            jne skip5
+            call printWon
+            skip5:
+            
+            mov bl, grid[2]
+            cmp bl, grid[5]              
+            jne skip6  
+            cmp bl, grid[8]  
+            jne skip6
+            call printWon
+            skip6:
+            
+            mov bl, grid[0]
+            cmp bl, grid[4]              
+            jne skip7  
+            cmp bl, grid[8]  
+            jne skip7
+            call printWon
+            skip7:
+            
+            mov bl, grid[2]
+            cmp bl, grid[4]              
+            jne skip8  
+            cmp bl, grid[6]  
+            jne skip8
+            call printWon
+            skip8:             
+        ret
+        
+        clearScreen:
+            mov ax, 3   ; clears the screen in ascii
+            int 10h
+        ret    
     end main                     
-    
-
-
