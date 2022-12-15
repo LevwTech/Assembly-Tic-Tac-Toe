@@ -34,8 +34,11 @@ org 100h
             mov player,'o'  ; if even its o player turn
             endif:
             
+            notValid:
+            call printNewLine
             call printInputMsg
             call readInput ; al holds the position on the grid ( 1 => 9 )
+            
             
             push cx
             mov cx, 9
@@ -107,7 +110,29 @@ org 100h
         
         readInput:
            mov ah, 1 ; 1 for input, the value is in al
-           int 21h      
+           int 21h
+           
+           cmp al,'1'
+           je valid
+           cmp al,'2'
+           je valid
+           cmp al,'3'
+           je valid
+           cmp al,'4'
+           je valid
+           cmp al,'5'
+           je valid
+           cmp al,'6'
+           je valid
+           cmp al,'7'
+           je valid
+           cmp al,'8'
+           je valid
+           cmp al,'9'
+           je valid
+           jmp notValid
+           valid:
+                
         ret
         
        printWelcomeMsg:
@@ -216,5 +241,4 @@ org 100h
             mov ax, 3   ; clears the screen in ascii
             int 10h
         ret    
-    end main                     
-    
+    end main 
