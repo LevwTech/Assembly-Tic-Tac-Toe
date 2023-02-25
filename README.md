@@ -7,3 +7,5 @@ Steps to run the assembly game
 2) Create new file
 3) Paste game code inside ./game.s
 4) Click emulate
+
+[Game Screenshot](https://i.ibb.co/DQSCRfk/Capture.png)
